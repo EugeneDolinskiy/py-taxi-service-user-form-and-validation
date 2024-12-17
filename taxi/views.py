@@ -67,9 +67,9 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
         car = self.get_object()
         user = request.user
 
-        if "assign" in request.POST:
+        if "assign" in request.POST and user not in car.drivers.all():
             car.drivers.add(user)
-        elif "delete" in request.POST:
+        elif "delete" in request.POST and user in car.drivers.all():
             car.drivers.remove(user)
 
         return HttpResponseRedirect(reverse(
